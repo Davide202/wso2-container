@@ -97,6 +97,9 @@ validation_query = "SELECT 1"
 3. Attendi circa 2-3 minuti (WSO2 è "pesante" e deve inizializzare il database).
 4. Accedi alla console Publisher su: `https://localhost:9443/publisher` (credenziali di default: `admin` / `admin`).
 
+5. Configurazione di utenti, permessi etc: `https://localhost:9443/carbon/`
+6. Console di consultazione: `https://localhost:9443/devportal`
+
 **Un piccolo trucco:** Se vedi errori di connessione al database nei log (`docker logs -f wso2am`), di solito è perché il container MySQL non è ancora pronto a ricevere connessioni. Il `healthcheck` nel file Compose serve proprio a minimizzare questo rischio.
 
 Ti serve aiuto per configurare anche un certificato SSL personalizzato o preferisci vedere come aggiungere un **Identity Server** esterno per il Single Sign-On?

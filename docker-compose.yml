@@ -16,7 +16,7 @@ services:
       retries: 10
 
   api-manager:
-    image: wso2/wso2am:4.2.0
+    image: wso2/wso2am:4.3.0
     container_name: wso2am
     ports:
       - "9443:9443" # Console (Carbon, Publisher, DevPortal)
@@ -26,7 +26,7 @@ services:
       mysql:
         condition: service_healthy
     volumes:
-      - ./conf/deployment.toml:/home/wso2carbon/wso2am-4.2.0/repository/conf/deployment.toml
-      - ./lib/mysql-connector-j-8.0.33.jar:/home/wso2carbon/wso2am-4.2.0/repository/components/lib/mysql-connector-j-8.0.33.jar
+      - ./conf/deployment.toml:/home/wso2carbon/wso2am-4.3.0/repository/conf/deployment.toml
+      - ./lib/mysql-connector-j-8.0.33.jar:/home/wso2carbon/wso2am-4.3.0/repository/components/lib/mysql-connector-j-8.0.33.jar
     environment:
       - NODE_IP=127.0.0.1
