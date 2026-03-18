@@ -1,48 +1,39 @@
-version: '3.8'
+
+
 services:
   mysql:
     image: mysql:8.0
-    container_name: mysql-db
-    ports:
-      - "3306:3306"
+    container_name: wso2-mysql
     environment:
       MYSQL_ROOT_PASSWORD: root_password
-      MYSQL_DATABASE: WSO2AM_DB
+      MYSQL_DATABASE: shared_db
+    ports:
+      - "3306:3306"
     volumes:
       - ./mysql-data:/var/lib/mysql
+      # MySQL esegue automaticamente gli script in questa cartella all'avvio
+      #- ./db_init:/docker-entrypoint-initdb.d
+    command: --default-authentication-plugin=mysql_native_password
     healthcheck:
       test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
-      timeout: 20s
-      retries: 10
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   api-manager:
     image: wso2/wso2am:4.3.0
-    container_name: wso2am
-    ports:
-      - "9443:9443" # Console (Carbon, Publisher, DevPortal)
-      - "8280:8280" # Gateway HTTP
-      - "8243:8243" # Gateway HTTPS
+    container_name: wso2am-mysql
     depends_on:
       mysql:
         condition: service_healthy
+    ports:
+      - "8280:8280"
+      - "8243:8243"
+      - "9443:9443"
     volumes:
-      - ./conf/deployment.toml:/home/wso2carbon/wso2am-4.3.0/repository/conf/deployment.toml
-      - ./lib/mysql-connector-j-8.0.33.jar:/home/wso2carbon/wso2am-4.3.0/repository/components/lib/mysql-connector-j-8.0.33.jar
+      # Montiamo il file di configurazione
+      - ./deployment.toml:/home/wso2carbon/wso2am-4.3.0/repository/conf/deployment.toml:ro
+      # Montiamo il driver MySQL
+      - ./mysql-connector-j-8.0.33.jar:/home/wso2carbon/wso2am-4.3.0/repository/components/lib/mysql-connector-j-8.0.33.jar:ro
     environment:
-      - NODE_IP=127.0.0.1
-    # Optional: Add a health check for the API Manager
-    healthcheck:
-      test: ["CMD", "curl", "-f", "https://localhost:9443/carbon/admin/login.jsp"]
-      timeout: 20s
-      retries: 10
-
-      # Optional: Add a command to wait for MySQL to be ready before starting the API Manager 
-    command: >
-      sh -c "   
-        until mysql -h mysql -u root -proot_password -e 'SELECT 1'; do
-          echo 'Waiting for MySQL...'
-          sleep 5
-        done
-        echo 'MySQL is ready. Starting API Manager...'
-        /home/wso2carbon/wso2am-4.3.0/bin/wso2server.sh"
-                 
+      - JVM_MEM_OPTS=-Xms1024m -Xmx2048m -Dsetup
