@@ -9,6 +9,7 @@ username = "root"
 password = "root_password"
 driver = "com.mysql.cj.jdbc.Driver"
 
+# Identity Database (OAuth, SAML, OIDC data)
 [database.identity_db]
 type = "mysql"
 url = "jdbc:mysql://mysql:3306/shared_db?useSSL=false"
@@ -23,16 +24,24 @@ username = "root"
 password = "root_password"
 driver = "com.mysql.cj.jdbc.Driver"
 
+[database.identity_db.pool_options]
+maxActive = 100
+maxWait = 60000
+minIdle = 5
+testOnBorrow = true
+validationQuery = "SELECT 1"
+validationInterval = 30000
+
+[user_store]
+type = "database_unique_id"
+database = "shared_db"
+
 [database.default]
 type = "mysql"
 url = "jdbc:mysql://mysql:3306/shared_db?useSSL=false"
 username = "root"
 password = "root_password"
 driver = "com.mysql.cj.jdbc.Driver"
-
-[user_store]
-type = "database_unique_id"
-database = "shared_db"
 
 [registry]
 database = "default"
@@ -43,26 +52,24 @@ password = "admin"
 create_admin_account = true
 admin_role = "admin"
 
+# Configurazione del Keystore usato per l'esposizione HTTPS
 [keystore.tls]
-file_name = "wso2carbon.jks"
-type = "JKS"
-password = "wso2carbon"
-alias = "wso2carbon"
-key_password = "wso2carbon"
+file_name =  "wso2carbon.jks"
+type =  "JKS"
+password =  "wso2carbon"
+alias =  "wso2carbon"
+key_password =  "wso2carbon"
 
+# Configurazione del Keystore primario
 [keystore.primary]
-file_name = "wso2carbon.jks"
-type = "JKS"
-password = "wso2carbon"
-alias = "wso2carbon"
-key_password = "wso2carbon"
+file_name =  "wso2carbon.jks"
+type =  "JKS"
+password =  "wso2carbon"
+alias =  "wso2carbon"
+key_password =  "wso2carbon"
 
+# Configurazione del Truststore
 [truststore]
-file_name = "client-truststore.jks"
-type = "JKS"
-password = "wso2carbon"
-
-# Sblocco per il Gateway (Debug)
-[apim.internal_apis]
-enable_basic_auth = true
-
+file_name =  "client-truststore.jks"
+type =  "JKS"
+password =  "wso2carbon"

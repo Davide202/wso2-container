@@ -1,0 +1,6 @@
+https://github.com/wso2/docker-apim/tree/master/docker-compose
+
+https://github.com/wso2/carbon-apimgt/blob/master/features/apimgt/org.wso2.carbon.apimgt.core.feature/src/main/resources/sql/mysql.sql
+
+https://github.com/wso2/carbon-apimgt/blob/master/features/apimgt/org.wso2.carbon.apimgt.core.feature/src/main/resources/sql/mysql_cluster.sql
+

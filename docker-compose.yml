@@ -35,5 +35,7 @@ services:
       - ./deployment.toml:/home/wso2carbon/wso2am-4.3.0/repository/conf/deployment.toml:ro
       # Montiamo il driver MySQL
       - ./mysql-connector-j-8.0.33.jar:/home/wso2carbon/wso2am-4.3.0/repository/components/lib/mysql-connector-j-8.0.33.jar:ro
+    entrypoint: >
+      sh -c "ln -s /home/wso2carbon/wso2am-4.3.0/repository/resources/dbscripts /home/wso2carbon/wso2am-4.3.0/dbscripts && /home/wso2carbon/docker-entrypoint.sh"
     environment:
-      - JVM_MEM_OPTS=-Xms1024m -Xmx2048m -Dsetup
+      - JVM_MEM_OPTS=-Xms1024m -Xmx2048m #-Dsetup
